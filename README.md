@@ -25,6 +25,8 @@ Emulador de NES para el navegador, hecho con React y Vite. La interfaz es un tel
 
 <img width="1376" height="881" alt="image" src="https://github.com/user-attachments/assets/0ef0b976-01ae-41ec-bc9f-63c8734822ce" />
 
+<img width="1266" height="867" alt="image" src="https://github.com/user-attachments/assets/04c804cc-c0b1-44a0-b311-cbb55422a267" />
+
 ## Hoja de ruta
 
 - [x] **Etapa 1:** interfaz CRT, estática, letrero y carga de ROM
