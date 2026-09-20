@@ -1,4 +1,4 @@
-# NES Web
+# NES Emulator Web 
 
 Emulador de NES para el navegador, hecho con React y Vite. La interfaz es un televisor CRT retro: la pantalla muestra estática con un letrero que dice **"Arrastre el archivo .ROM"**, y basta con soltar la ROM sobre la ventana para cargarla.
 
