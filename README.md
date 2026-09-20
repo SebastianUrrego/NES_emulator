@@ -16,10 +16,17 @@ Emulador de NES para el navegador, hecho con React y Vite. La interfaz es un tel
 - Al cargar una ROM válida, la pantalla muestra sus datos en verde fosforito, con un botón para cambiarla.
 - Diseño adaptable a móvil.
 
+**Etapa 2 completada: emulador con video y teclado.**
+
+- Núcleo `jsnes` envuelto en la clase `Emulator`, que corre a ~60 fps y dibuja cada cuadro en un `<canvas>` de 256x240.
+- Teclado: flechas o WASD para moverse, `X` = A, `Z` = B, `Enter` = Start, `Shift` = Select.
+- Barra inferior con los datos de la ROM, la leyenda de controles y el botón "Expulsar ROM".
+- Si el mapper no está soportado, se muestra el error en el letrero.
+
 ## Hoja de ruta
 
 - [x] **Etapa 1:** interfaz CRT, estática, letrero y carga de ROM
-- [ ] **Etapa 2:** núcleo del emulador ([jsnes](https://github.com/bfirsh/jsnes)), video en pantalla y control con teclado
+- [x] **Etapa 2:** núcleo del emulador ([jsnes](https://github.com/bfirsh/jsnes)), video en pantalla y control con teclado
 - [ ] **Etapa 3:** sonido con botón de silencio
 - [ ] **Etapa 4:** soporte de gamepad (Gamepad API)
 - [ ] **Etapa 5:** guardar y cargar estado

@@ -2,7 +2,8 @@ import { useCallback, useRef, useState } from 'react';
 import Tv from './components/Tv.jsx';
 import StaticCanvas from './components/StaticCanvas.jsx';
 import DropSign from './components/DropSign.jsx';
-import RomInfo from './components/RomInfo.jsx';
+import NesScreen from './components/NesScreen.jsx';
+import Hud from './components/Hud.jsx';
 import { useFileDrop } from './hooks/useFileDrop.js';
 import { readRomFile } from './lib/rom.js';
 
@@ -25,6 +26,12 @@ export default function App() {
     }
   }, []);
 
+  // El emulador no pudo arrancar la ROM (por ejemplo, mapper no soportado): vuelve a la estática.
+  const handleEmulatorError = useCallback((message) => {
+    setRom(null);
+    setError(message);
+  }, []);
+
   const dragging = useFileDrop(loadFile);
 
   const openPicker = () => inputRef.current?.click();
@@ -33,43 +40,41 @@ export default function App() {
     e.target.value = ''; // permite volver a elegir el mismo archivo
     if (file) loadFile(file);
   };
-  const reset = () => {
+  const eject = () => {
     setRom(null);
     setError('');
   };
 
   return (
     <main className="stage">
-      <Tv active={Boolean(rom)} dragging={dragging}>
-        {rom ? (
-          <RomInfo rom={rom} onReset={reset} />
-        ) : (
-          <div
-            className="screen-drop"
-            role="button"
-            tabIndex={0}
-            aria-label="Arrastre el archivo .ROM o presione Enter para elegirlo"
-            onClick={openPicker}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openPicker();
-              }
-            }}
-          >
-            <StaticCanvas />
-            <DropSign dragging={dragging} error={error} loading={loading} />
-          </div>
-        )}
-      </Tv>
+      <div className="console">
+        <Tv active={Boolean(rom)} dragging={dragging}>
+          {rom ? (
+            <NesScreen rom={rom} onError={handleEmulatorError} />
+          ) : (
+            <div
+              className="screen-drop"
+              role="button"
+              tabIndex={0}
+              aria-label="Arrastre el archivo .ROM o presione Enter para elegirlo"
+              onClick={openPicker}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openPicker();
+                }
+              }}
+            >
+              <StaticCanvas />
+              <DropSign dragging={dragging} error={error} loading={loading} />
+            </div>
+          )}
+        </Tv>
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".nes,.rom,.bin"
-        hidden
-        onChange={onPick}
-      />
+        {rom && <Hud rom={rom} onEject={eject} />}
+      </div>
+
+      <input ref={inputRef} type="file" accept=".nes,.rom,.bin" hidden onChange={onPick} />
     </main>
   );
 }
