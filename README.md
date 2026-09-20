@@ -23,6 +23,8 @@ Emulador de NES para el navegador, hecho con React y Vite. La interfaz es un tel
 - Barra inferior con los datos de la ROM, la leyenda de controles y el botón "Expulsar ROM".
 - Si el mapper no está soportado, se muestra el error en el letrero.
 
+<img width="1376" height="881" alt="image" src="https://github.com/user-attachments/assets/0ef0b976-01ae-41ec-bc9f-63c8734822ce" />
+
 ## Hoja de ruta
 
 - [x] **Etapa 1:** interfaz CRT, estática, letrero y carga de ROM
