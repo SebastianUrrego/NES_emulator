@@ -1,0 +1,387 @@
+:root {
+  --font-pixel: 'Press Start 2P', ui-monospace, 'Courier New', monospace;
+  --phosphor: #7dff9a;
+  --case-1: #4a4640;
+  --case-2: #2e2b27;
+  --case-3: #1b1917;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: radial-gradient(ellipse at 50% 35%, #2a2622 0%, #131110 70%, #0a0909 100%);
+  color: #fff;
+  font-family: var(--font-pixel);
+  overflow-x: hidden;
+}
+
+.stage {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 40px);
+}
+
+/* ---------- Televisor ---------- */
+
+.tv {
+  width: min(96vw, 980px);
+  max-height: 96vh;
+}
+
+.tv__body {
+  display: grid;
+  grid-template-columns: 1fr clamp(64px, 11%, 110px);
+  gap: clamp(8px, 2vw, 22px);
+  padding: clamp(12px, 2.6vw, 30px);
+  border-radius: clamp(16px, 3vw, 34px);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.1), transparent 30%),
+    linear-gradient(180deg, var(--case-1), var(--case-2) 60%, var(--case-3));
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -6px 14px rgba(0, 0, 0, 0.55),
+    0 30px 60px rgba(0, 0, 0, 0.65),
+    0 0 0 2px #0d0c0b;
+}
+
+.tv__bezel {
+  padding: clamp(6px, 1.4vw, 16px);
+  border-radius: clamp(14px, 3vw, 30px);
+  background: #0b0a09;
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 0 6px 14px rgba(0, 0, 0, 0.9),
+    0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.tv__screen {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 8% / 10%; /* esquinas curvas de tubo CRT */
+  background: #000;
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.85),
+    0 0 0 2px #000,
+    0 0 26px rgba(160, 200, 255, 0.12);
+  animation: flicker 0.16s infinite steps(2);
+  transition: box-shadow 0.15s;
+}
+
+.tv--dragging .tv__screen {
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.85),
+    0 0 0 3px var(--phosphor),
+    0 0 40px rgba(125, 255, 154, 0.55);
+}
+
+.tv--on .tv__screen {
+  background: #04120a;
+}
+
+/* Líneas de barrido + viñeta */
+.tv__scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.3) 3px,
+      rgba(0, 0, 0, 0) 4px
+    ),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* Reflejo del cristal */
+.tv__glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.03) 22%,
+    transparent 40%
+  );
+}
+
+@keyframes flicker {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(0.965);
+  }
+  100% {
+    filter: brightness(1.02);
+  }
+}
+
+/* Panel lateral: perillas, altavoz, LED */
+.tv__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vw, 20px);
+  padding-top: 4px;
+}
+
+.tv__knob {
+  width: clamp(34px, 78%, 66px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    linear-gradient(#f4efe6, #f4efe6) center / 8% 42% no-repeat,
+    radial-gradient(circle at 35% 30%, #6a655c, #24211e 70%);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.7),
+    inset 0 2px 2px rgba(255, 255, 255, 0.2),
+    0 0 0 4px #14120f;
+}
+
+.tv__knob:first-child {
+  transform: rotate(-35deg);
+}
+
+.tv__knob--small {
+  width: clamp(26px, 58%, 48px);
+  transform: rotate(50deg);
+}
+
+.tv__speaker {
+  margin-top: auto;
+  width: 78%;
+  display: grid;
+  gap: clamp(3px, 0.6vw, 7px);
+}
+
+.tv__speaker span {
+  height: clamp(3px, 0.6vw, 6px);
+  border-radius: 4px;
+  background: #0c0b0a;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.tv__led {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff3b2f;
+  box-shadow: 0 0 10px 2px rgba(255, 59, 47, 0.8);
+}
+
+.tv--on .tv__led {
+  background: var(--phosphor);
+  box-shadow: 0 0 10px 2px rgba(125, 255, 154, 0.8);
+}
+
+.tv__feet {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12%;
+}
+
+.tv__feet span {
+  width: 14%;
+  height: clamp(8px, 1.6vw, 16px);
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(#211f1c, #0c0b0a);
+}
+
+/* ---------- Pantalla: zona de arrastre + estática ---------- */
+
+.screen-drop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.screen-drop:focus-visible {
+  box-shadow: inset 0 0 0 3px var(--phosphor);
+}
+
+.static-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  filter: contrast(1.1) brightness(0.95);
+}
+
+/* ---------- Letrero ---------- */
+
+.sign {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 8%;
+  pointer-events: none;
+}
+
+.sign__box {
+  max-width: 88%;
+  padding: clamp(10px, 2.4vw, 26px) clamp(12px, 3vw, 34px);
+  text-align: center;
+  background: #000;
+  color: #fff;
+  border: clamp(3px, 0.6vw, 6px) solid #fff;
+  box-shadow:
+    0 0 0 clamp(3px, 0.6vw, 6px) #000,
+    0 0 30px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+.sign__title {
+  margin: 0;
+  font-size: clamp(9px, 2.5vw, 24px);
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.sign__hint {
+  margin: clamp(6px, 1.4vw, 14px) 0 0;
+  font-size: clamp(6px, 1.2vw, 11px);
+  line-height: 1.7;
+  color: #b8b8b8;
+  text-transform: uppercase;
+}
+
+.sign__arrow {
+  display: block;
+  width: 0;
+  height: 0;
+  margin: clamp(8px, 1.6vw, 16px) auto 0;
+  border-left: clamp(6px, 1.2vw, 12px) solid transparent;
+  border-right: clamp(6px, 1.2vw, 12px) solid transparent;
+  border-top: clamp(8px, 1.6vw, 16px) solid #fff;
+  animation: blink 1s steps(2) infinite;
+}
+
+.sign--dragging .sign__box {
+  color: var(--phosphor);
+  border-color: var(--phosphor);
+  text-shadow: 0 0 8px rgba(125, 255, 154, 0.8);
+}
+
+.sign--error .sign__box {
+  border-color: #ff5a4d;
+}
+
+.sign--error .sign__title {
+  color: #ff5a4d;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- Pantalla "ROM cargada" ---------- */
+
+.rom-info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(6px, 1.4vw, 14px);
+  padding: 9% 11%;
+  color: var(--phosphor);
+  text-shadow: 0 0 6px rgba(125, 255, 154, 0.7);
+  font-size: clamp(6px, 1.45vw, 13px);
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.rom-info__title {
+  margin: 0;
+  font-size: 1.6em;
+  text-align: center;
+}
+
+.rom-info__list {
+  margin: 0;
+}
+
+.rom-info__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  border-bottom: 1px dotted rgba(125, 255, 154, 0.35);
+}
+
+.rom-info__row dt {
+  opacity: 0.75;
+}
+
+.rom-info__row dd {
+  margin: 0;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rom-info__note {
+  margin: 0;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.rom-info__btn {
+  align-self: center;
+  padding: 0.8em 1.4em;
+  font: inherit;
+  color: #04120a;
+  background: var(--phosphor);
+  border: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.rom-info__btn:hover,
+.rom-info__btn:focus-visible {
+  background: #fff;
+  outline: none;
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 520px) {
+  .tv__body {
+    grid-template-columns: 1fr;
+  }
+  .tv__panel {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .tv__speaker {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv__screen,
+  .sign__arrow {
+    animation: none;
+  }
+}
