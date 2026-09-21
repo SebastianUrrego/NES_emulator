@@ -136,14 +136,18 @@ src/
     └── rom.js                  lectura y validación de la cabecera iNES
 ```
 
+## Visualizacion
+### Mario Bros
+![alt text](image.png)
+
+### EarthBound
+![alt text](image-1.png)
+
+### The legend of zelda
+![alt text](image-2.png)
+
 ## Basado en
-
-_(Completa esta sección: indica en qué se basa el proyecto, por ejemplo un curso, un tutorial, un repositorio, un trabajo académico o una idea propia, con sus enlaces y autores.)_
-
-- **Proyecto o material de referencia:** _por completar_
-- **Autor o autores:** _por completar_
-- **Enlace:** _por completar_
-- **Qué se tomó de esa base y qué se cambió:** _por completar_
+- https://github.com/afska/nestation
 
 ### Tecnologías y créditos
 
