@@ -488,3 +488,60 @@ body {
   border-bottom-width: 2px;
   border-radius: 5px;
 }
+
+/* ---------- Etapa 3: sonido ---------- */
+
+.hud__top {
+  flex-wrap: wrap;
+}
+
+.hud__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hud__sound {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: #fff;
+  background: #3a3631;
+  border: 1px solid #55504a;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.hud__icon:hover,
+.hud__icon:focus-visible {
+  background: #4a453f;
+  outline: none;
+}
+
+.hud__icon[aria-pressed='true'] {
+  color: #ff8a80;
+}
+
+.hud__volume {
+  width: 110px;
+  accent-color: var(--phosphor);
+  cursor: pointer;
+}
+
+.hud__hint {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #f2d48a;
+  background: rgba(242, 212, 138, 0.08);
+  border: 1px solid rgba(242, 212, 138, 0.25);
+  border-radius: 8px;
+}

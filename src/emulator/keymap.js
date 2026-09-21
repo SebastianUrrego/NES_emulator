@@ -1,6 +1,6 @@
 import { Controller } from 'jsnes';
 
-// Teclas (event.code, independiente de la distribución del teclado) -> botón del control 1.
+// Teclas (event.code, independiente de la distribución del teclado) botón del control 1.
 export const KEY_MAP = {
     ArrowUp: Controller.BUTTON_UP,
     KeyW: Controller.BUTTON_UP,

@@ -1,4 +1,5 @@
 import { NES } from 'jsnes';
+import { NesAudio } from './NesAudio.js';
 
 const WIDTH = 256;
 const HEIGHT = 240;
@@ -15,8 +16,8 @@ export function bytesToBinaryString(bytes) {
     return out;
 }
 
-// Envuelve jsnes: dibuja cada cuadro en un <canvas> y corre el bucle a ~60 fps.
-// No depende de React, así las siguientes etapas (audio, gamepad, estados) se añaden aquí.
+// Envuelve jsnes: dibuja cada cuadro en un <canvas>, reproduce el sonido y corre el bucle a ~60 fps.
+// No depende de React, así las siguientes etapas (gamepad, estados) se añaden aquí.
 export class Emulator {
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
@@ -28,9 +29,12 @@ export class Emulator {
         this.last = 0;
         this.acc = 0;
 
+        this.audio = new NesAudio();
+
         this.nes = new NES({
             onFrame: (frameBuffer) => this.storeFrame(frameBuffer),
-            onAudioSample: () => { }, // el sonido llega en la etapa 3
+            onAudioSample: (left, right) => this.audio.push(left, right),
+            sampleRate: this.audio.sampleRate,
         });
 
         this.tick = this.tick.bind(this);
@@ -58,6 +62,12 @@ export class Emulator {
         this.raf = 0;
     }
 
+    // Detiene el bucle y libera el audio. Hay que llamarlo al dejar de usar el emulador.
+    destroy() {
+        this.stop();
+        this.audio.close();
+    }
+
     tick(now) {
         this.raf = requestAnimationFrame(this.tick);
 
@@ -68,6 +78,7 @@ export class Emulator {
         let frames = 0;
         while (this.acc >= FRAME_MS && frames < MAX_CATCH_UP) {
             this.nes.frame();
+            this.audio.flush();
             this.acc -= FRAME_MS;
             frames++;
         }

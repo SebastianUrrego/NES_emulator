@@ -1,16 +1,19 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Tv from './components/Tv.jsx';
 import StaticCanvas from './components/StaticCanvas.jsx';
 import DropSign from './components/DropSign.jsx';
 import NesScreen from './components/NesScreen.jsx';
 import Hud from './components/Hud.jsx';
 import { useFileDrop } from './hooks/useFileDrop.js';
+import { useAudioSettings } from './hooks/useAudioSettings.js';
 import { readRomFile } from './lib/rom.js';
 
 export default function App() {
   const [rom, setRom] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [audioState, setAudioState] = useState('suspended');
+  const { settings: audio, setVolume, toggleMute } = useAudioSettings();
   const inputRef = useRef(null);
 
   const loadFile = useCallback(async (file) => {
@@ -34,6 +37,15 @@ export default function App() {
 
   const dragging = useFileDrop(loadFile);
 
+  // Tecla M: silenciar / activar el sonido.
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.code === 'KeyM' && !e.repeat) toggleMute();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [toggleMute]);
+
   const openPicker = () => inputRef.current?.click();
   const onPick = (e) => {
     const file = e.target.files?.[0];
@@ -50,7 +62,12 @@ export default function App() {
       <div className="console">
         <Tv active={Boolean(rom)} dragging={dragging}>
           {rom ? (
-            <NesScreen rom={rom} onError={handleEmulatorError} />
+            <NesScreen
+              rom={rom}
+              audio={audio}
+              onError={handleEmulatorError}
+              onAudioState={setAudioState}
+            />
           ) : (
             <div
               className="screen-drop"
@@ -71,7 +88,16 @@ export default function App() {
           )}
         </Tv>
 
-        {rom && <Hud rom={rom} onEject={eject} />}
+        {rom && (
+          <Hud
+            rom={rom}
+            audio={audio}
+            audioState={audioState}
+            onVolume={setVolume}
+            onToggleMute={toggleMute}
+            onEject={eject}
+          />
+        )}
       </div>
 
       <input ref={inputRef} type="file" accept=".nes,.rom,.bin" hidden onChange={onPick} />
